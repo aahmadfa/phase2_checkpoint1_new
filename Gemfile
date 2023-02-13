@@ -80,3 +80,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
+
+gem 'simple_form'
+
+gem 'validates_timeliness', git: "https://github.com/adzap/validates_timeliness"
