@@ -2,6 +2,7 @@ class Employee < ApplicationRecord
     has_many :assignments
     has_many :stores, through: :assignments
   
+    '''
     # first name and last name
     validates :first_name, presence: true
     validates :last_name, presence: true
@@ -25,6 +26,7 @@ class Employee < ApplicationRecord
 
     # active
     validates :active, default: true, inclusion: { in: [true, false], message: "not a valid boolean"}
+    '''
   
     # Scopes
     scope :active, -> {where(active: true)}
@@ -37,6 +39,7 @@ class Employee < ApplicationRecord
     scope :admins, -> { where(role: :admin) }
     enum role: { regular: 1, manager: 2, admin: 3 }
   
+    '''
     # Methods    
     def name
       "#{last_name}, #{first_name}"
@@ -69,5 +72,5 @@ class Employee < ApplicationRecord
     def normalize_phone_number
         self.phone = phone.gsub(/\D/, '')
     end
-
+    '''
 end

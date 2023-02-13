@@ -2,6 +2,7 @@ class Store < ApplicationRecord
     has_many :assignments
     has_many :employees, through: :assignments
 
+    '''
     #Store name
     validates :name, presence:true, type: string, uniqueness: true
     
@@ -23,12 +24,13 @@ class Store < ApplicationRecord
 
     #Active/Inactive
     validates :active, type: boolean, inclusion: { in: [true, false] }
+    '''
 
     #Scopes
     scope :active, -> { where(active: true) }
     scope :inactive, -> { where(active: false) }
     scope :alphabetical, -> { order(name: :asc) }
-
+    '''
     #Methods
     def make_active
         update(active: true)
@@ -41,4 +43,5 @@ class Store < ApplicationRecord
     def normalize_phone_number
         self.phone = phone.gsub(/\D/, '')
     end
+    '''
 end

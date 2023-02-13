@@ -7,7 +7,7 @@ class CreateEmployees < ActiveRecord::Migration[7.0]
       t.date :date_of_birth
       t.string :phone
       t.integer :role
-      t.boolean :active, default: 1
+      t.boolean :active
 
       t.timestamps
     end
