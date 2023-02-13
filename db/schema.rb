@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_155716) do
     t.date "date_of_birth"
     t.string "phone"
     t.integer "role"
-    t.boolean "active", default: true
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
