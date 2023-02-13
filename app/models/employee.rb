@@ -34,10 +34,10 @@ class Employee < ApplicationRecord
     scope :alphabetical, -> {order(last_name: :asc, first_name: :asc)}
     scope :is_18_or_older, -> {where("date_of_birth <= ?", 18.years.ago.to_date)}
     scope :younger_than_18, -> {where("date_of_birth > ?", 18.years.ago.to_date)}
-    scope :regulars, -> { where(role: :employee) }
-    scope :managers, -> { where(role: :manager) }
-    scope :admins, -> { where(role: :admin) }
-    enum role: { regular: 1, manager: 2, admin: 3 }
+    scope :regulars, -> { where("role=?", roles["employee"]) }
+    scope :managers, -> { where("role=?", roles["manager"]) }
+    scope :admins, -> { where("role=?", roles["admin"]) }
+    enum role: { employee: 1, manager: 2, admin: 3 }
   
     '''
     # Methods    
