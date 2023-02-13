@@ -84,5 +84,3 @@ end
 gem 'simple_form'
 
 gem 'validates_timeliness', git: "https://github.com/adzap/validates_timeliness"
-
-gem 'nokogiri', '~> 1.14', '>=1.14.2'
