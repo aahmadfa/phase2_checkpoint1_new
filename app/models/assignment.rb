@@ -25,7 +25,7 @@ class Assignment < ApplicationRecord
     scope :for_store, -> (store) {where(store: store)}
     scope :for_employee, -> (employee) {where(employee: employee)}
     scope :for_role, -> (role) {joins(:employee).where('employees.role = ?', role)}
-    scope :for_date, -> (date) {where('BETWEEN start_date >= ? AND end_date <= ? OR (start_date <= ? AND end_date IS NULL)', date, date, date) }
+    scope :for_date, -> (date) {where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', date, date) }
 
 
     #Callback
