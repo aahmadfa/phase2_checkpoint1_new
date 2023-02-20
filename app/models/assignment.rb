@@ -17,7 +17,7 @@ class Assignment < ApplicationRecord
 # 
 
     # Scopes
-    scope :current, -> { where(end_date:nil)} #current assignements
+    scope :current, -> { where(end_date:nil)} #current assignments
     scope :past, -> { where.not(end_date:nil) } #past assignments
     scope :by_store, -> { joins(:store).order('stores.name') }
     scope :by_employee, -> { joins(:employee).order('employees.last_name, employees.first_name') }

@@ -1,12 +1,12 @@
 FactoryBot.define do
   factory :store do
-    name { "MyString" }
-    street { "MyString" }
-    city { "MyString" }
-    state { "MyString" }
-    zip { "MyString" }
-    phone { "MyString" }
-    active { false }
+    name { "Coffee Bean" }
+    street { "MyStreet" }
+    city { "MyCity" }
+    state { "MyState" }
+    zip { "59100" }
+    phone { "1234567890" }
+    active { true }
   end
 end
 
