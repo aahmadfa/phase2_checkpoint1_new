@@ -41,7 +41,7 @@ class Store < ApplicationRecord
     end
 
     def normalize_phone_number
-        self.phone = phone.gsub(/\D/, '')
+        self.phone = phone.gsub(/\D/, '').rjust(10, '0')
     end
 
 end
