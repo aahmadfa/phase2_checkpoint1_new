@@ -17,8 +17,8 @@ class Assignment < ApplicationRecord
 # 
 
     # Scopes
-    scope :current, -> { where('end_date IS NULL')} #current assignements
-    scope :past, -> { where('end_date IS NOT NULL').where('end_date < ?', Date.today) } #past assignments
+    scope :current, -> { where(end_date:nil)} #current assignements
+    scope :past, -> { where.not(end_date:nil) } #past assignments
     scope :by_store, -> { joins(:store).order('stores.name') }
     scope :by_employee, -> { joins(:employee).order('employees.last_name, employees.first_name') }
     scope :chronological, -> { order('start_date DESC, end_date DESC') }
