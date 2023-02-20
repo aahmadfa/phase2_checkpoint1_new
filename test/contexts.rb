@@ -1,5 +1,4 @@
 module Contexts
-
     def create_assignments
         @assignment1 = FactoryBot.create(:assignment)
         @assignment2 = FactoryBot.create(:assignment, store_id:1, employee_id:1)
@@ -35,5 +34,5 @@ module Contexts
         @Store2.delete
         @Store3.delete
     end
-
+end
 
