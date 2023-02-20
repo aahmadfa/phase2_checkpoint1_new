@@ -9,3 +9,4 @@ FactoryBot.define do
     active { false }
   end
 end
+

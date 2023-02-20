@@ -1,8 +1,18 @@
 FactoryBot.define do
   factory :assignment do
-    store_id { 1 }
-    employee_id { 1 }
-    start_date { 1 }
-    end_date { 1 }
+    association :store, factory: :store
+    association :employee, factory: :employee
+    start_date { Date.today }
+    active { true }
+
+    factory :active_assignment do
+      end_date { nil }
+    end
+
+    factory :inactive_assignment do
+      end_date { 1.day.ago.to_date }
+      active { false }
+    end
   end
 end
+
