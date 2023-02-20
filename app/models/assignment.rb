@@ -22,14 +22,14 @@ class Assignment < ApplicationRecord
     scope :by_store, -> { joins(:store).order('stores.name') }
     scope :by_employee, -> { joins(:employee).order('employee.last_name', 'employee.first_name') }
     scope :chronological, -> { order('end_date DESC, start_date DESC') }
-    scope :for_store, -> (store) {where(store: store)}
-    scope :for_employee, -> (employee) {where(employee: employee)}
+    scope :for_store, -> (store) {joins(:store).where('assignment.store_id = ?', store.id} #
+    scope :for_employee, -> (employee) {joins(:employee).where(' assignment.employee_id = ?', employee.id)} #
     scope :for_role, -> (role) {joins(:employee).where('employees.role = ?', role)}
     scope :for_date, -> (date) {where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', date, date) }
 
 
     #Callback
-    before_create :end_employee_assignment
+    #before_create :end_employee_assignment
 
     # #Methods
     # def end_employee_assignment
