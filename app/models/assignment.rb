@@ -2,20 +2,20 @@ class Assignment < ApplicationRecord
     belongs_to :store
     belongs_to :employee
 
- '''
-    #store id
-    validates :store_id, presence: true, type: integer
+# 
+#     #store id
+#     validates :store_id, presence: true, type: integer
 
-    #employee id
-    validates :employee_id, presence: true, type: integer
+#     #employee id
+#     validates :employee_id, presence: true, type: integer
 
-    #dates
-    validates :start_date, presence: true, type: date
-    validates :end_date, presence: true, type: date
+#     #dates
+#     validates :start_date, presence: true, type: date
+#     validates :end_date, presence: true, type: date
 
-    validate :proper_dates
+#     validate :proper_dates
+# 
 
-'''
     # Scopes
     scope :current, -> { where('end_date IS NULL')}
     scope :past, -> { where('end_date IS NOT NULL').where('end_date < ?', Date.today) }
@@ -25,7 +25,7 @@ class Assignment < ApplicationRecord
     scope :for_store, -> (store) {where(store: store)}
     scope :for_employee, -> (employee) {where(employee: employee)}
     scope :for_role, -> (role) {joins(:employee).where('employees.role = ?', role)}
-    scope :for_date, -> (date) {where('? BETWEEN start_date AND end_date OR (start_date <= ? AND end_date IS NULL)', date, date) }
+    scope :for_date, -> (date) {where('BETWEEN start_date >= ? AND end_date <= ? OR (start_date <= ? AND end_date IS NULL)', date, date, date) }
 
 
     #Callback
@@ -39,14 +39,12 @@ class Assignment < ApplicationRecord
 
     def proper_dates
         if start_date.nil?
-            errors.add(:start_date, why no start date?)
+            errors.add(:start_date, message: "why no start date?")
         elsif start_Date > Date.current
-            errors.add(:start_date, must be on or before present date)
+            errors.add(:start_date, message: "must be on or before present date")
         end
     
         if end_date.present? && end_date < start_date
-            errors.add(:end_date, must be after start date)
+            errors.add(:end_date, message: "must be after start date")
         end
     end
-'''
-end
