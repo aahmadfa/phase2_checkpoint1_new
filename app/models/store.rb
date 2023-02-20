@@ -29,8 +29,8 @@ class Store < ApplicationRecord
     #Scopes
     scope :active, -> { where(active: true) }
     scope :inactive, -> { where(active: false) }
-    scope :alphabetical, -> { order(name: :asc) }
-    '''
+    scope :alphabetical, -> { order('name asc') }
+
     #Methods
     def make_active
         update(active: true)
@@ -43,5 +43,5 @@ class Store < ApplicationRecord
     def normalize_phone_number
         self.phone = phone.gsub(/\D/, '')
     end
-    '''
+
 end
