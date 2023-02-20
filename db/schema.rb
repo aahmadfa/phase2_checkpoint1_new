@@ -14,8 +14,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_182035) do
   create_table "assignments", force: :cascade do |t|
     t.integer "store_id"
     t.integer "employee_id"
-    t.integer "start_date"
-    t.integer "end_date"
+    t.date "start_date"
+    t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
