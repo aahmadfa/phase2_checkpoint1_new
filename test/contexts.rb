@@ -1,8 +1,8 @@
 module Contexts
     def create_assignments
-        @assignment1 = FactoryBot.create(:assignment, store_id:1, employee_id:1)
-        @assignment2 = FactoryBot.create(:assignment, store_id:2, employee_id:2, start_date:"2020-02-01")
-        @assignment3 = FactoryBot.create(:assignment, store_id:3, employee_id:3, start_date:"2020-01-01")
+        @assignment1 = FactoryBot.create(:assignment, store_id:1, employee_id:1, start_date: 2.months.ago.to_date)
+        @assignment2 = FactoryBot.create(:assignment, store_id:2, employee_id:2, start_date: 3.months.ago.to_date)
+        @assignment3 = FactoryBot.create(:assignment, store_id:3, employee_id:3, start_date: 4.months.ago.to_date)
     end
 
     def destroy_assignments
