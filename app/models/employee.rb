@@ -60,7 +60,7 @@ class Employee < ApplicationRecord
     end
   
     def current_assignment
-      assignments.where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", Date.today, Date.today).first
+      assignments.current.first
     end
   
     def over_18?
