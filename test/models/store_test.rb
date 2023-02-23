@@ -11,6 +11,7 @@ class StoreTest < ActiveSupport::TestCase
   should validate_presence_of(:city)
 
   should_not allow_value("asdf").for(:phone)
+  should_not allow_value("111/111/1111").for(:phone)
   should_not allow_value("2362346").for(:zip)
   should_not allow_value("Michigan").for(:state)
   # should_not allow_value("Yes").for(:active)

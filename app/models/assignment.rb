@@ -29,7 +29,7 @@ class Assignment < ApplicationRecord
 
     #Methods
     def end_employee_assignment
-        employee = Employee.where(id: self.employee_id)
+        employee = Employee.where(id: self.employee_id).first
         current_assignment = employee.current_assignment
         current_assignment.update_attribute(:end_date, self.start_date) unless current_assignment.nil?
     end

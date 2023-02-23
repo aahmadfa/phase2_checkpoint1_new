@@ -24,7 +24,7 @@ class Employee < ApplicationRecord
     validates :role, presence: true, inclusion: { in: roles.keys, message: "is not a valid role"}
 
     # active
-    validates :active, presence: true, inclusion: { in: [true, false], message: "not a valid boolean"}
+    #validates :active, inclusion: { in: [true, false], message: "not a valid boolean"}
   
     # Scopes
     scope :active, -> {where(active: true)}

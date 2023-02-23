@@ -4,7 +4,7 @@ class Store < ApplicationRecord
 
     
     #Store name
-    validates :name, presence:true, uniqueness: true
+    validates :name, presence:true, uniqueness: {case_sensitive: false}
     
     #Street
     validates :street,  presence: true
@@ -19,8 +19,9 @@ class Store < ApplicationRecord
     validates :zip, length: {is:5}, format: { with: /\A\d+\z/, message: "only allows numbers" }
 
     #Phone
-    before_validation :normalize_phone_number
+    
     validates_format_of :phone, with: /\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/, message: "should be 10 digits (area code needed) and delimited with dashes only"
+    after_validation :normalize_phone_number
 
     #Active/Inactive
     # validates :active, inclusion: { in: [true, false] }
