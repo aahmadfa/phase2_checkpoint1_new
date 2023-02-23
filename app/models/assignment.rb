@@ -2,7 +2,6 @@ class Assignment < ApplicationRecord
     belongs_to :store
     belongs_to :employee
 
-
     validates :store_id, presence: true, numericality: { only_integer: true }
 
     #employee id
@@ -10,7 +9,6 @@ class Assignment < ApplicationRecord
 
     #dates
     validates :start_date, presence: true
-
     validate :proper_dates
 
 
@@ -31,6 +29,7 @@ class Assignment < ApplicationRecord
 
     #Methods
     def end_employee_assignment
+        employee = Employee.where(id: self.employee_id)
         current_assignment = employee.current_assignment
         current_assignment.update_attribute(:end_date, self.start_date) unless current_assignment.nil?
     end
