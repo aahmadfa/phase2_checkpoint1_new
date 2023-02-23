@@ -8,8 +8,8 @@ class Assignment < ApplicationRecord
     validates :employee_id, presence: true, numericality: { only_integer: true }
 
     #dates
-    validates_date :start_date, date: { on_or_before: Date.today }
-
+    validate_presence_of :start_date
+    validates_date :start_date, on_or_before: Date.current
     # Scopes
     scope :current, -> { where(end_date: nil)} #current assignments
     scope :past, -> { where.not(end_date: nil) } #past assignments
