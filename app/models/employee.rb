@@ -60,11 +60,16 @@ class Employee < ApplicationRecord
     end
   
     def current_assignment
-      assignments.current.first
+      current_assignment1 = self.assignments.current
+      if current_assignment1.empty?
+        return nil
+      else 
+        return current_assignment1.first
+      end
     end
   
     def over_18?
-      date.today - date_of_birth >= 18
+      Date.today - date_of_birth >= 18
     end
   
     def make_active
