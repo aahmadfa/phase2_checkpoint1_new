@@ -69,11 +69,20 @@ class Employee < ApplicationRecord
     # end
 
     def current_assignment
-      assignments.where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', Date.today, Date.today).order('end_date DESC, start_date DESC').first
+      assignment1 = self.assignments.current
+      if assignment1.empty?
+        return nil
+      else
+        return assignment1.first
+      end
     end
   
     def over_18?
-      Date.today - self.date_of_birth >= 18
+      if self.date_of_birth <= 18.years.ago.to_date
+        return true
+      else
+        return false
+      end
     end
   
     def make_active
