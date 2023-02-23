@@ -10,6 +10,7 @@ class Assignment < ApplicationRecord
     #dates
     validates_presence_of :start_date
     validates_date :start_date, on_or_before: Date.current
+    validates_date :end_date, allow_blank: true, after: :start_date, on_or_before: Date.current
 
     # Scopes
     scope :current, -> { where(end_date: nil)} #current assignments
@@ -27,9 +28,12 @@ class Assignment < ApplicationRecord
 
     #Methods
     def end_employee_assignment
-        employee = Employee.where(id: self.employee_id).first
-        current_assignment = employee.current_assignment
-        current_assignment.update_attribute(:end_date, self.to_date) unless current_assignment.nil?
+        employee = Employee.find(self.employee_id).current_assignment
+        if employee.nil?
+            true
+        else
+            employee.update_attribute(:end_date, self.start_date.to_date)
+        end
     end
 
 end
