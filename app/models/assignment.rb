@@ -8,9 +8,9 @@ class Assignment < ApplicationRecord
     validates :employee_id, presence: true, numericality: { only_integer: true }
 
     #dates
-    validates_date :start_date, presence: true, date: { on_or_before: Date.today }
+    validates :start_date, presence: true
+    validates_date :start_date, date: { on_or_before: Date.today }
     validate :proper_dates
-
 
     # Scopes
     scope :current, -> { where(end_date: nil)} #current assignments
