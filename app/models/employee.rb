@@ -38,6 +38,19 @@ class Employee < ApplicationRecord
 
   
     # Methods    
+
+    def manager_role?
+      self.role == 'manager'
+    end
+
+    def admin_role?
+      self.role == 'admin'
+    end
+
+    def employee_role?
+      self.role == 'employee'
+    end
+
     def name
       "#{last_name}, #{first_name}"
     end
@@ -51,7 +64,7 @@ class Employee < ApplicationRecord
     end
   
     def over_18?
-      date.today - date_of_birth > 18
+      date.today - date_of_birth >= 18
     end
   
     def make_active
