@@ -8,7 +8,7 @@ class Assignment < ApplicationRecord
     validates :employee_id, presence: true, numericality: { only_integer: true }
 
     #dates
-    validates :start_date, presence: true
+    validates_date :start_date, presence: true, date: { on_or_before: Date.today }
     validate :proper_dates
 
 
@@ -22,7 +22,6 @@ class Assignment < ApplicationRecord
     scope :for_employee, -> (employee) { joins(:employee).where('assignments.employee_id = ?', employee.id) }
     scope :for_role, -> (role) {joins(:employee).where('role = ?', Employee.roles[role])}
     scope :for_date, -> (date) {where('start_date <= ? AND (end_date > ? OR end_date IS NULL)', date, date)} #for date
-
 
     #Callback
     before_create :end_employee_assignment
