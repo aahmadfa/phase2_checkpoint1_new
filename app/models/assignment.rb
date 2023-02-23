@@ -8,7 +8,6 @@ class Assignment < ApplicationRecord
     validates :employee_id, presence: true, numericality: { only_integer: true }
 
     #dates
-    validates :start_date, presence: true
     validates_date :start_date, date: { on_or_before: Date.today }
 
     # Scopes
