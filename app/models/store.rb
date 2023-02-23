@@ -2,29 +2,29 @@ class Store < ApplicationRecord
     has_many :assignments
     has_many :employees, through: :assignments
 
-    # '''
-    # #Store name
-    # validates :name, presence:true, type: string, uniqueness: true
     
-    # #Street
-    # validates :street,  presence: true, type: string
+    #Store name
+    validates :name, presence:true, uniqueness: true
+    
+    #Street
+    validates :street,  presence: true
 
-    # #City
-    # validates :city, presence: true, type: string
+    #City
+    validates :city, presence: true
+    
+    #State
+    validates :state, length: {is:2}, inclusion: {in: %w[PA OH WV]}
 
-    # #State
-    # validates :state, type: string, length: {is:2}, default: "PA", inclusion {in: %w[PA OH WV]}
+    #Zip
+    validates :zip, length: {is:5}, format: { with: /\A\d+\z/, message: "only allows numbers" }
 
-    # #Zip
-    # validates :zip, type: string, length: {is:5}, format: { with: /\A\d+\z/, message: "only allows numbers" }
+    #Phone
+    before_validation :normalize_phone_number
+    validates_format_of :phone, with: /\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/, message: "should be 10 digits (area code needed) and delimited with dashes only"
 
-    # #Phone
-    # before_validation :normalize_phone_number
-    # validates :phone, type: string, length: {is:10}, format: { with: /\A\d+\z/ }
-
-    # #Active/Inactive
-    # validates :active, type: boolean, inclusion: { in: [true, false] }
-    # '''
+    #Active/Inactive
+    # validates :active, inclusion: { in: [true, false] }
+    
 
     #Scopes
     scope :active, -> { where(active: true) }
@@ -41,7 +41,9 @@ class Store < ApplicationRecord
     end
 
     def normalize_phone_number
-        self.phone = phone.gsub(/\D/, '').rjust(10, '0')
+        phone = self.phone.to_s  # change to string in case input as all numbers 
+        phone=phone.gsub(/[^0-9]/,"") # strip all non-digits: it substitutes all digits with empty character
+        self.phone = phone       # reset self.phone to new string
     end
 
 end

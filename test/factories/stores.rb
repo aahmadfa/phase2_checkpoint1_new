@@ -3,7 +3,7 @@ FactoryBot.define do
     name { "Coffee Bean" }
     street { "MyStreet" }
     city { "MyCity" }
-    state { "MyState" }
+    state { "PA" }
     zip { "59100" }
     phone { "1234567890" }
     active { true }

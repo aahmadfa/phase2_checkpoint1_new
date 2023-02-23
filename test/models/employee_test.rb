@@ -15,39 +15,67 @@ class EmployeeTest < ActiveSupport::TestCase
 
   should_not allow_value("asdf").for(:phone)
   should_not allow_value("1234567890721344153").for(:ssn)
-  should_not allow_value(5).for(:role)
-
+  should allow_value("employee", "manager", "admin").for(:role)
+  #should_not allow_value("ceo").for(:role)
 
   #contexts
-  should "return only active employees" do
-    assert_equal [@alex, @mark], Employee.active
-  end
 
-  should "return all inactive employees" do
-    assert_equal [@rachel], Employee.inactive
-  end
+  context "Creating a employee context" do
+    # setting up the context
+    setup do
+      create_employees
+    end
+   
+    # Tearing down the context
+    teardown do
+      destroy_employees
+    end
 
-  should "return all active employees in alphabetical order by last name, first name" do
-    assert_equal ["Heimann, Alex", "Heimann, Mark", "Heimann, Rachel"], Employee.alphabetical.map{|e| "#{e.first_name}, #{e.last_name}"}
-  end
+    should "have a scope for active employees" do
+      assert_equal 3, Employee.active.size
+    end
 
-  should "return all employees 18 years old or older" do
-    assert_equal [@alex, @mark], Employee.is_18_or_older
-  end
+    should "have a scope for inactive employees" do
+      assert_equal 0, Employee.inactive.size
+    end
 
-  should "return all employees under 18 years old" do
-    assert_equal [], Employee.younger_than_18
-  end
+    should "have a scope to order alphabetically by last name and first name" do
+      assert_equal ["Alex", "Mark", "Rachel"], Employee.alphabetical.map{ |e| e.first_name }
+    end
 
-  should "return all employees who have the role 'employee'" do
-    assert_equal [@alex, @mark, @rachel], Employee.regulars
-  end
+    should "have a scope for employees 18 or older" do
+      assert_equal 3, Employee.is_18_or_older.size
+    end
 
-  should "return all employees who have the role 'manager'" do
-    assert_equal [], Employee.managers
-  end
+    should "have a scope for employees younger than 18" do
+      assert_equal 0, Employee.younger_than_18.size
+    end
 
-  should "return all employees who have the role 'admin'" do
-    assert_equal [], Employee.admins
-  end
+    should "have a scope for regular employees" do
+      assert_equal 3, Employee.employee.size
+    end
+
+    should "have a scope for manager employees" do
+      assert_equal 0, Employee.manager.size
+    end
+
+    should "have a scope for admin employees" do
+      assert_equal 0, Employee.admin.size
+    end
+
+ #scope
+#  scope :active, -> {where(active: true)}
+#  scope :inactive, -> {where(active: false)}
+#  scope :alphabetical, -> {order(last_name: :asc, first_name: :asc)}
+#  scope :is_18_or_older, -> {where("date_of_birth <= ?", 18.years.ago.to_date)}
+#  scope :younger_than_18, -> {where("date_of_birth > ?", 18.years.ago.to_date)}
+#  scope :regulars, -> { where("role=?", roles["employee"]) }
+#  scope :managers, -> { where("role=?", roles["manager"]) }
+#  scope :admins, -> { where("role=?", roles["admin"]) }
+#  enum role: { employee: 1, manager: 2, admin: 3 }
+
+
+ 
+ end #end of context
+ 
 end

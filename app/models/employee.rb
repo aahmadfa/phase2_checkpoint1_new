@@ -1,32 +1,30 @@
 class Employee < ApplicationRecord
     has_many :assignments
     has_many :stores, through: :assignments
-  
-    # '''
-    # # first name and last name
-    # validates :first_name, presence: true
-    # validates :last_name, presence: true
-  
-    # # SSN
-    # before_validation :normalize_ssn #callback
-    # validates :SSN, presence: true, uniqueness: true, length: {is:9}, format: { with: /\A\d+\z/, message: "only allows numbers" }
-  
-    # # Date of birth
-    # validates :date_of_birth, presence: true, inclusion: {
-    #   in: proc {14.years.ago.to_date},
-    #   message: "must be 14 years or older"
-    # }
-  
-    # # Phone number
-    # before_validation :normalize_ssn #callback
-    # validates :phone, presence: true, length: {is:10}, format: { with: /\A\d+\z/, message: "only allows numbers" }
-  
-    # # Role
-    # validates :role, presence: true, inclusion: {in: 1..3, message: "is not a valid role"}
 
-    # # active
-    # validates :active, default: true, inclusion: { in: [true, false], message: "not a valid boolean"}
-    # '''
+    
+    # first name and last name
+    validates :first_name, presence: true
+    validates :last_name, presence: true
+  
+    # SSN
+    before_validation :normalize_ssn #callback
+    validates :ssn, presence: true, uniqueness: true, length: {is:9}, format: { with: /\A\d+\z/, message: "only allows numbers" }
+  
+    # Date of birth
+    validates :date_of_birth, presence: true
+    validate :must_be_at_least_14_years_old
+    
+    # Phone number
+    before_validation :normalize_phone_number #callback
+    validates :phone, presence: true, format: { with: /\A\d{10}\z/, message: "only allows numbers" }
+  
+    # Role
+    enum role: {employee: 1,manager: 2, admin: 3 }
+    validates :role, presence: true, inclusion: { in: roles.keys, message: "is not a valid role"}
+
+    # active
+    validates :active, presence: true, inclusion: { in: [true, false], message: "not a valid boolean"}
   
     # Scopes
     scope :active, -> {where(active: true)}
@@ -37,38 +35,48 @@ class Employee < ApplicationRecord
     scope :regulars, -> { where("role=?", roles["employee"]) }
     scope :managers, -> { where("role=?", roles["manager"]) }
     scope :admins, -> { where("role=?", roles["admin"]) }
-    enum role: { employee: 1, manager: 2, admin: 3 }
+
   
-    # # Methods    
-    # def name
-    #   "#{last_name}, #{first_name}"
-    # end
+    # Methods    
+    def name
+      "#{last_name}, #{first_name}"
+    end
   
-    # def proper_name
-    #   "#{first_name} #{last_name}"
-    # end
+    def proper_name
+      "#{first_name} #{last_name}"
+    end
   
-    # def current_assignment
-    #   assignments.where("start_date <= ? AND (end_date >= ? OR end_date IS NULL", Date.today, Date.today).first
-    # end
+    def current_assignment
+      assignments.where("start_date <= ? AND (end_date >= ? OR end_date IS NULL)", Date.today, Date.today).first
+    end
   
-    # def over_18?
-    #   date.today - date_of_birth > 18
-    # end
+    def over_18?
+      date.today - date_of_birth > 18
+    end
   
-    # def make_active
-    #   update(active: true)
-    # end
+    def make_active
+      update(active: true)
+    end
     
-    # def make_inactive
-    #   update(active: false)
-    # end
+    def make_inactive
+      update(active: false)
+    end
 
-    # def normalize_ssn
-    #     self.SSN = SSN.gsub(/\D/, '')
-    # end
+    def normalize_ssn
+      if self.ssn.present?
+        self.ssn = ssn.gsub(/\D/, '')
+      end
+    end
 
-    # def normalize_phone_number
-    #     self.phone = phone.gsub(/\D/, '')
-    # end
+    def normalize_phone_number
+      if self.phone.present?
+        self.phone = phone.gsub(/\D/, '')
+      end
+    end
+
+    def must_be_at_least_14_years_old
+      if date_of_birth.present? && date_of_birth > 14.years.ago.to_date
+        errors.add(:date_of_birth, "must be at least 14 years old")
+      end
+    end
 end
