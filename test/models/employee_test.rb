@@ -63,19 +63,60 @@ class EmployeeTest < ActiveSupport::TestCase
       assert_equal 0, Employee.admin.size
     end
 
- #scope
-#  scope :active, -> {where(active: true)}
-#  scope :inactive, -> {where(active: false)}
-#  scope :alphabetical, -> {order(last_name: :asc, first_name: :asc)}
-#  scope :is_18_or_older, -> {where("date_of_birth <= ?", 18.years.ago.to_date)}
-#  scope :younger_than_18, -> {where("date_of_birth > ?", 18.years.ago.to_date)}
-#  scope :regulars, -> { where("role=?", roles["employee"]) }
-#  scope :managers, -> { where("role=?", roles["manager"]) }
-#  scope :admins, -> { where("role=?", roles["admin"]) }
-#  enum role: { employee: 1, manager: 2, admin: 3 }
+    # methods
+    should "return true if employee has a manager role" do
+      refute @rachel.manager_role?
+    end
+      
+    should "return true if employee has an admin role" do
+      refute @alex.admin_role?
+    end
+      
+    should "return true if employee has an employee role" do
+      assert @mark.employee_role?, true
+    end
+      
+    should "return last name, first name as a string" do
+      assert_equal "Heimann, Alex", @alex.name
+    end
+      
+    should "return proper name as a string" do
+      assert_equal "Alex Heimann", @alex.proper_name
+    end
+      
+    should "return current assignment or nil if no current assignment exists" do
+      assert_equal @assignment1, @alex.current_assignment
+    end
+      
+    should "return true if employee is over 18 years old" do
+      assert @alex.over_18?
+    end
+      
+    should "make employee active" do
+      @alex.make_active
+      assert @alex.active
+    end
+      
+    should "make employee inactive" do
+      @alex.make_inactive
+      refute @alex.active
+    end
+      
+    should "normalize SSN" do
+      @alex.normalize_ssn
+      assert_equal "123456789", @alex.ssn
+    end
+      
+    should "normalize phone number" do
+      @alex.normalize_phone_number
+      assert_equal "4128978970", @alex.phone
+    end
+      
+    should "validate date of birth is at least 14 years ago" do
+      @alex.must_be_at_least_14_years_old
+    end
 
 
- 
  end #end of context
  
 end

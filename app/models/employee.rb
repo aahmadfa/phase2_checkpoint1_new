@@ -59,13 +59,17 @@ class Employee < ApplicationRecord
       "#{first_name} #{last_name}"
     end
   
+    # def current_assignment
+    #   current_assignment1 = self.assignment.current
+    #   if current_assignment1.empty?
+    #     return nil
+    #   else 
+    #     return current_assignment1.first 
+    #   end
+    # end
+
     def current_assignment
-      current_assignment1 = self.assignment.current
-      if current_assignment1.empty?
-        return nil
-      else 
-        return current_assignment1.first 
-      end
+      assignments.where('start_date <= ? AND (end_date >= ? OR end_date IS NULL)', Date.today, Date.today).order('end_date DESC, start_date DESC').first
     end
   
     def over_18?
